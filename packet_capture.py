@@ -22,45 +22,49 @@ class PacketCaptureEngine:
 
         while True:
             self._burst_normal(random.choice(normal_sources))
+            time.sleep(1)
             self._burst_ddos(ddos_src)
+            time.sleep(1)
             self._burst_port_scan(scan_src)
+            time.sleep(1)
             self._burst_bruteforce(brute_src)
+            time.sleep(1)
             self._burst_sql(sql_src)
-            time.sleep(2)
+            time.sleep(3)
 
     def _burst_normal(self, src_ip):
-        for _ in range(random.randint(5, 10)):
+        for _ in range(3):
             self._finalize(src_ip, "8.8.8.8", random.choice([53, 80, 443]),
                             random.randint(300, 900), "GET /index.html", 0)
-            time.sleep(0.05)
+            time.sleep(0.2)
 
     def _burst_ddos(self, src_ip):
-        for _ in range(random.randint(15, 25)):
+        for _ in range(5):
             self._finalize(src_ip, "172.217.16.78", 80,
                             random.randint(100, 300), "SYN", 1)
-            time.sleep(0.01)
+            time.sleep(0.1)
 
     def _burst_port_scan(self, src_ip):
-        ports = [21, 22, 23, 25, 53, 80, 110, 139, 143, 443, 445, 3306, 3389, 8080]
+        ports = [21, 22, 23, 25, 53, 80, 443, 3306, 3389, 8080]
         random.shuffle(ports)
-        for port in ports:
+        for port in ports[:6]:
             self._finalize(src_ip, "192.168.1.1", port,
                             random.randint(60, 150), "SYN probe", 1)
-            time.sleep(0.03)
+            time.sleep(0.15)
 
     def _burst_bruteforce(self, src_ip):
-        for _ in range(random.randint(10, 18)):
+        for _ in range(5):
             self._finalize(src_ip, "192.168.1.20",
                             random.choice([22, 23, 3389, 445]),
                             random.randint(100, 220), "LOGIN failed", 1)
-            time.sleep(0.02)
+            time.sleep(0.15)
 
     def _burst_sql(self, src_ip):
-        payloads = ["' OR 1=1 --", "UNION SELECT username, password FROM users", "DROP TABLE users; --"]
+        payloads = ["' OR 1=1 --", "UNION SELECT username, password FROM users"]
         for p in payloads:
             self._finalize(src_ip, "192.168.1.30", 80,
                             random.randint(400, 1000), p, 0)
-            time.sleep(0.06)
+            time.sleep(0.2)
 
     def _sql_score(self, payload):
         if not payload:
