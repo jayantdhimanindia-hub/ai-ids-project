@@ -1,0 +1,18 @@
+{
+  "accuracy": 1.0,
+  "features": [
+    "packet_size",
+    "packets_per_sec",
+    "unique_ports",
+    "auth_attempts",
+    "sql_score",
+    "syn_ratio"
+  ],
+  "labels": [
+    "Brute Force",
+    "DDoS",
+    "Normal",
+    "Port Scan",
+    "SQL Injection"
+  ]
+}
