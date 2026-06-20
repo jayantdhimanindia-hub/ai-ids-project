@@ -49,7 +49,7 @@ class IntrusionDetector:
             if pps >= 150 and syn_ratio >= 0.75:
                 label = "DDoS"
                 confidence = 0.92
-            elif unique_ports >= 20:
+            elif unique_ports >= 5:
                 label = "Port Scan"
                 confidence = 0.90
             elif auth_attempts >= 25:
