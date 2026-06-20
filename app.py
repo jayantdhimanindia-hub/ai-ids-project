@@ -43,16 +43,11 @@ def api_health():
             "capture_started": _started,
         }
     )
-
+start_capture_once()
 
 if __name__ == "__main__":
-    start_capture_once()
-
     import os
     port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
 
-    app.run(
-        debug=False,
-        host="0.0.0.0",
-        port=port
-    )
+
